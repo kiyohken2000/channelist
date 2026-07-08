@@ -74,18 +74,30 @@ npm run pages:dev                # = wrangler pages dev -- npm run dev
 
 ---
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare Pages — CLI direct upload)
 
-1. Connect the GitHub repo to Cloudflare Pages.
-2. Build settings:
-   - Framework preset: **Vite**
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - `functions/` is auto-detected.
-3. Add the secret **`YOUTUBE_API_KEY`** in Pages → Settings → Environment variables (Secret). Set it for **both Production and Preview** environments (preview deploys run Functions too).
-4. **Rate limiting (WAF):** add a rule limiting each IP to **20 requests/min** on `/api/*`. The thumbnail proxy is also under `/api/*`; direct icon loading + max-8 concurrency keeps normal usage well under the limit. Tune the threshold after release.
+This project deploys via `wrangler` direct upload (no GitHub integration).
 
-`main` push → production deploy. PRs → preview deploys.
+One-time setup:
+
+```bash
+npx wrangler login                                   # authenticate
+npx wrangler pages project create channelist --production-branch main
+# Set the production secret (use a key restricted to YouTube Data API v3):
+npx wrangler pages secret put YOUTUBE_API_KEY --project-name channelist
+```
+
+Every deploy:
+
+```bash
+npm run deploy        # = npm run build && wrangler pages deploy dist --project-name channelist --branch main
+```
+
+Live at https://channelist.pages.dev after the first deploy.
+
+**Rate limiting (WAF, recommended):** add a rule limiting each IP to **20 requests/min** on `/api/*`. The thumbnail proxy is also under `/api/*`; direct icon loading + max-8 concurrency keeps normal usage well under the limit. Tune the threshold after release.
+
+> Alternatively you can connect the GitHub repo in the Cloudflare dashboard (Framework preset: Vite, build `npm run build`, output `dist`) for push-to-deploy. If you do, set `YOUTUBE_API_KEY` for both Production and Preview environments.
 
 ---
 

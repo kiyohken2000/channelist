@@ -9,6 +9,7 @@
     "build": "tsc -p tsconfig.app.json && vite build",
     "preview": "vite preview",
     "pages:dev": "wrangler pages dev -- npm run dev",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name channelist --branch main",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.functions.json"
