@@ -7,8 +7,6 @@ import {
   COUNT_OPTIONS,
 } from '../lib/shareImage';
 import { downloadBlob, todayStamp } from '../lib/download';
-import { buildXIntentUrl } from '../constants';
-import xIcon from '../assets/images/x-icon-64.png';
 
 interface ShareImagePanelProps {
   /** ResultView で選択中のソート順に並んだ配列(先頭 N 件が対象)。 */
@@ -20,18 +18,6 @@ const LAYOUTS: ShareLayout[] = ['list', 'icon-grid', 'card-grid'];
 
 function fileName(): string {
   return `channelist-${todayStamp()}.png`;
-}
-
-/**
- * タッチ端末(スマホ/タブレット)らしいかを判定する。
- * デスクトップ Chrome/Edge(Windows)も navigator.canShare({files}) が真になるため、
- * X 共有では「共有シート経路(画像添付可)」を使うかどうかの分岐にこれを併用する。
- */
-function isTouchLikeDevice(): boolean {
-  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
-  const coarsePointer = window.matchMedia?.('(pointer: coarse)').matches ?? false;
-  const mobileUA = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-  return coarsePointer || mobileUA;
 }
 
 /**
@@ -55,7 +41,6 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState(false);
   const [canShareFiles, setCanShareFiles] = useState(false);
-  const [xHint, setXHint] = useState(false);
 
   const blobRef = useRef<Blob | null>(null);
   const previewUrlRef = useRef<string | null>(null);
@@ -63,16 +48,11 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
   const maxCount = LAYOUT_MAX_COUNT[layout];
   const effectiveCount = Math.min(count, maxCount);
 
-  // 共有シート(画像添付)経路を使うのはタッチ端末かつ Web Share 対応時のみ。
-  // PC(canShare が真でも)は共有シートに行かず、保存/intent 経路にする。
-  const useShareSheet = canShareFiles && isTouchLikeDevice();
-
   // 選択変更のたびに Canvas で再生成
   useEffect(() => {
     let cancelled = false;
     setGenerating(true);
     setError(false);
-    setXHint(false);
 
     renderShareImage(subscriptions, { layout, count: effectiveCount })
       .then((result) => {
@@ -86,7 +66,7 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
         blobRef.current = result.blob;
         setPreviewUrl(result.previewUrl);
 
-        // 共有可否を実ファイルで判定(iOS Safari / Android Chrome で true)
+        // iOS の保存経路(共有シート)判定用に、実ファイルで canShare を確認
         try {
           const file = new File([result.blob], fileName(), { type: 'image/png' });
           setCanShareFiles(
@@ -116,18 +96,6 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
     };
   }, []);
 
-  // iOS Safari 対策: 生成済み Blob をユーザージェスチャ内で同期的に共有
-  const handleShare = async () => {
-    const blob = blobRef.current;
-    if (!blob) return;
-    const file = new File([blob], fileName(), { type: 'image/png' });
-    try {
-      await navigator.share({ files: [file] });
-    } catch {
-      // ユーザーキャンセル等は無視
-    }
-  };
-
   const handleSave = async () => {
     const blob = blobRef.current;
     if (!blob) return;
@@ -143,24 +111,6 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
       return;
     }
     downloadBlob(blob, fileName());
-  };
-
-  // X で共有:
-  //  - モバイル(canShareFiles): 共有シートに画像 + テキストを渡す(X を選べば画像添付済み)
-  //  - PC: X の intent は画像添付不可のため、画像を自動保存してから
-  //        テキスト+リンク入りの投稿画面を開き、手動添付を促す
-  const handleShareX = () => {
-    const tweetText = t('share.tweetText');
-    // X の投稿画面(テキスト+リンク)を直接開く。
-    // ※ X の intent は画像添付に非対応のため画像は付かない(仕様上の制約)。
-    // PC では画像を手元に用意できるよう自動保存して案内を出す。
-    // スマホは <a download> が写真アプリに入らないため自動保存はせず、
-    // 画像が必要な場合は「画像を保存」から保存してもらう。
-    if (!isTouchLikeDevice() && blobRef.current) {
-      downloadBlob(blobRef.current, fileName());
-      setXHint(true);
-    }
-    window.open(buildXIntentUrl(tweetText), '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -235,26 +185,7 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
         <div className="share__actions">
           <button
             type="button"
-            className="btn btn--x"
-            onClick={handleShareX}
-            disabled={generating || !previewUrl}
-          >
-            <img src={xIcon} alt="" width={18} height={18} aria-hidden="true" />
-            {t('share.shareX')}
-          </button>
-          {useShareSheet && !isIOS() && (
-            <button
-              type="button"
-              className="btn btn--primary"
-              onClick={handleShare}
-              disabled={generating || !previewUrl}
-            >
-              {t('share.share')}
-            </button>
-          )}
-          <button
-            type="button"
-            className="btn"
+            className="btn btn--primary"
             onClick={handleSave}
             disabled={generating || !previewUrl}
           >
@@ -262,11 +193,6 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
           </button>
         </div>
 
-        {xHint && (
-          <p className="share__xhint" role="status">
-            {t('share.xSavedHint')}
-          </p>
-        )}
         {isIOS() && (
           <p className="share__xhint">{t('share.iosSaveHint')}</p>
         )}
