@@ -61,6 +61,7 @@
       "card-grid": "カード格子"
     },
     "countLabel": "件数",
+    "countAll": "すべて ({{count}})",
     "preview": "プレビュー",
     "generating": "生成中…",
     "share": "共有",

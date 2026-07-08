@@ -61,6 +61,7 @@
       "card-grid": "Card grid"
     },
     "countLabel": "Count",
+    "countAll": "All ({{count}})",
     "preview": "Preview",
     "generating": "Generating…",
     "share": "Share",

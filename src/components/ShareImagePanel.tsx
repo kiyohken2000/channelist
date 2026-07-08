@@ -5,6 +5,7 @@ import {
   renderShareImage,
   LAYOUT_MAX_COUNT,
   COUNT_OPTIONS,
+  HARD_MAX_COUNT,
 } from '../lib/shareImage';
 import { downloadBlob, todayStamp } from '../lib/download';
 
@@ -36,7 +37,8 @@ function isIOS(): boolean {
 export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps) {
   const { t } = useTranslation();
   const [layout, setLayout] = useState<ShareLayout>('card-grid');
-  const [count, setCount] = useState(30);
+  // 数値(固定件数)または 'all'(全件)。
+  const [count, setCount] = useState<number | 'all'>(30);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState(false);
@@ -45,8 +47,13 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
   const blobRef = useRef<Blob | null>(null);
   const previewUrlRef = useRef<string | null>(null);
 
+  const total = subscriptions.length;
   const maxCount = LAYOUT_MAX_COUNT[layout];
-  const effectiveCount = Math.min(count, maxCount);
+  // 'all' はレイアウト上限を無視して全件(ハード上限まで)。数値はレイアウト上限でクリップ。
+  const effectiveCount =
+    count === 'all'
+      ? Math.min(total, HARD_MAX_COUNT)
+      : Math.min(count, maxCount);
 
   // 選択変更のたびに Canvas で再生成
   useEffect(() => {
@@ -152,12 +159,13 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
             <div className="toggle-row" role="group">
               {COUNT_OPTIONS.map((c) => {
                 const disabled = c > maxCount;
+                const active = count !== 'all' && effectiveCount === c;
                 return (
                   <button
                     key={c}
                     type="button"
-                    className={`toggle ${effectiveCount === c ? 'toggle--active' : ''}`}
-                    aria-pressed={effectiveCount === c}
+                    className={`toggle ${active ? 'toggle--active' : ''}`}
+                    aria-pressed={active}
                     disabled={disabled}
                     onClick={() => setCount(c)}
                   >
@@ -165,6 +173,14 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
                   </button>
                 );
               })}
+              <button
+                type="button"
+                className={`toggle ${count === 'all' ? 'toggle--active' : ''}`}
+                aria-pressed={count === 'all'}
+                onClick={() => setCount('all')}
+              >
+                {t('share.countAll', { count: total })}
+              </button>
             </div>
           </div>
         </div>

@@ -23,12 +23,18 @@ const WATERMARK_TEXT = 'channelist.pages.dev';
 const ICON_TIMEOUT_MS = 5000;
 const CONCURRENCY = 8;
 
-/** レイアウトごとの件数上限(仕様書 8)。 */
+/** レイアウトごとの推奨件数上限(数値ボタンのグレーアウト判定に使用。仕様書 8)。 */
 export const LAYOUT_MAX_COUNT: Record<ShareLayout, number> = {
   list: 30,
   'card-grid': 50,
   'icon-grid': 100,
 };
+
+/**
+ * 「すべて」選択時のハード上限。Canvas の高さ制限(多くのブラウザで ~32767px)を
+ * 超えて描画が破綻しないための安全弁。list(rowH=64)でも 300 件 ≒ 19,000px で収まる。
+ */
+export const HARD_MAX_COUNT = 300;
 
 /** 件数選択肢。 */
 export const COUNT_OPTIONS = [10, 30, 50, 100] as const;
@@ -402,8 +408,8 @@ export async function renderShareImage(
   subs: Subscription[],
   options: ShareImageOptions,
 ): Promise<ShareRenderResult> {
-  const max = LAYOUT_MAX_COUNT[options.layout];
-  const target = subs.slice(0, Math.min(options.count, max));
+  // 呼び出し側で件数は決定済み。ここでは Canvas 破綻防止のハード上限のみ適用。
+  const target = subs.slice(0, Math.min(options.count, HARD_MAX_COUNT));
 
   let canvas: HTMLCanvasElement;
 
