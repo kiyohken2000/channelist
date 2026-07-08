@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "channelist",
+    "tagline": "登録チャンネル一覧をテキスト/CSV/Markdown/JSON/OPMLで書き出し、画像でシェアできます"
+  },
+  "header": {
+    "language": "言語"
+  },
+  "landing": {
+    "stepsTitle": "使い方(3ステップ)",
+    "step1Title": "プライバシー設定をオフにする",
+    "step1Body": "YouTubeのプライバシー設定で「チャンネル登録をすべて非公開にする」を<0>オフ</0>にします。",
+    "step1Link": "プライバシー設定を開く",
+    "step1AppSummary": "YouTubeアプリをお使いの場合",
+    "step1AppDetail": "右下の「マイページ」→ 右上の歯車(設定)→ プライバシー → 『チャンネル登録をすべて非公開にする』をオフ(リンクがアプリに飛んで設定ページに着地しないケースへの対策)",
+    "step2Title": "ハンドルまたはURLを入力して取得",
+    "step2Body": "自分のハンドル(@から始まる名前)またはチャンネルURLを下に入力して取得します。",
+    "step3Title": "取得できたら設定を戻す",
+    "step3Body": "取得できたら、設定を<0>非公開に戻す</0>のを忘れないでください。",
+    "warning": "オフにしている間、あなたの登録チャンネル一覧は誰でも閲覧可能な状態になります。",
+    "inputLabel": "ハンドル または チャンネルURL",
+    "inputPlaceholder": "@your_handle または https://www.youtube.com/@your_handle",
+    "fetchButton": "取得する",
+    "noStore": "データはサーバーに保存されません。",
+    "privacyLink": "プライバシーポリシー"
+  },
+  "fetching": {
+    "message": "取得中…"
+  },
+  "result": {
+    "summary": "<0>{{channelTitle}}</0> さんの登録チャンネル {{count}} 件",
+    "formatLabel": "形式",
+    "sortLabel": "並び順",
+    "sort": {
+      "name": "名前順",
+      "newest": "登録が新しい順",
+      "oldest": "登録が古い順"
+    },
+    "format": {
+      "text": "Text",
+      "csv": "CSV",
+      "markdown": "Markdown",
+      "json": "JSON",
+      "opml": "OPML"
+    },
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "copyFailed": "コピーに失敗しました",
+    "download": "ダウンロード",
+    "shareImage": "画像でシェア",
+    "reminder": "設定を非公開に戻しましたか?",
+    "reminderLink": "設定ページを開く",
+    "restart": "最初からやり直す"
+  },
+  "share": {
+    "title": "画像でシェア",
+    "layoutLabel": "レイアウト",
+    "layout": {
+      "list": "リスト",
+      "icon-grid": "アイコン格子",
+      "card-grid": "カード格子"
+    },
+    "countLabel": "件数",
+    "preview": "プレビュー",
+    "generating": "生成中…",
+    "share": "共有",
+    "save": "画像を保存",
+    "close": "閉じる",
+    "error": "画像の生成に失敗しました"
+  },
+  "error": {
+    "HANDLE_NOT_FOUND": "チャンネルが見つかりません。ハンドル名を確認してください。",
+    "SUBSCRIPTIONS_PRIVATE": "登録チャンネルが非公開になっています。手順1の設定をオフにしてから数分待って再度お試しください。",
+    "QUOTA_EXCEEDED": "本日の利用上限に達しました。日本時間の夕方(太平洋時間0時)にリセットされます。",
+    "RATE_LIMITED": "リクエストが多すぎます。しばらく待ってからお試しください。",
+    "UNKNOWN": "エラーが発生しました。時間をおいて再度お試しください。",
+    "settingsLink": "プライバシー設定を開く",
+    "retry": "もう一度試す"
+  },
+  "footer": {
+    "github": "GitHub",
+    "privacy": "プライバシーポリシー",
+    "buyMeACoffee": "Buy Me a Coffee で支援する"
+  }
+}

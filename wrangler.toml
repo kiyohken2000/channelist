@@ -1,0 +1,8 @@
+# Cloudflare Pages 設定。基本はダッシュボード設定で足りるが、
+# `wrangler pages dev` でローカル統合確認する際の設定を明示しておく。
+name = "channelist"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-11-01"
+
+# 本番のシークレット YOUTUBE_API_KEY は Cloudflare ダッシュボードで設定する。
+# ローカルでは .dev.vars(gitignore 済み)に記述する。

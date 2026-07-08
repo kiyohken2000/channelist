@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy — channelist</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP",
+          Meiryo, sans-serif;
+        line-height: 1.7;
+        color: #0f0f0f;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 16px 64px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      h2 {
+        font-size: 18px;
+        margin-top: 32px;
+        border-bottom: 1px solid #e2e2e2;
+        padding-bottom: 6px;
+      }
+      .lang {
+        color: #606060;
+        font-size: 13px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-top: 40px;
+      }
+      a {
+        color: #065fd4;
+      }
+      code {
+        background: #f2f2f2;
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+      footer {
+        margin-top: 48px;
+        font-size: 13px;
+        color: #909090;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Privacy Policy / プライバシーポリシー</h1>
+    <p><a href="/">&larr; channelist</a></p>
+
+    <!-- ============ English ============ -->
+    <p class="lang">English</p>
+
+    <h2>Overview</h2>
+    <p>
+      channelist exports your public YouTube subscriptions into text formats and
+      lets you share them as an image. It does not require any login.
+    </p>
+
+    <h2>Data we do not store</h2>
+    <p>
+      We do <strong>not</strong> store your handle, channel ID, subscription
+      list, or any generated output. Your input is passed through our Cloudflare
+      Pages Function only to call the YouTube Data API and return the result to
+      your browser. Nothing is written to logs or a database.
+    </p>
+
+    <h2>What is processed</h2>
+    <ul>
+      <li>
+        The handle / channel URL you enter is sent to our server function, which
+        calls the YouTube Data API v3 using a server-side API key. The key is
+        never exposed to your browser.
+      </li>
+      <li>
+        Channel icons may be fetched through an image proxy
+        (<code>/api/thumbnail</code>) restricted to YouTube image hosts, solely
+        to draw the share image. Images are not retained.
+      </li>
+      <li>
+        The share image is generated entirely in your browser (Canvas). It is
+        never uploaded to our servers.
+      </li>
+    </ul>
+
+    <h2>Local storage</h2>
+    <p>
+      The only value stored in your browser is your language preference
+      (<code>JA</code>/<code>EN</code>). No other data is placed in local
+      storage or cookies.
+    </p>
+
+    <h2>Third parties</h2>
+    <p>
+      Requests are served through Cloudflare and the YouTube Data API (Google).
+      Their handling of network requests is governed by their own policies.
+    </p>
+
+    <h2>Your subscriptions visibility</h2>
+    <p>
+      To use this app you temporarily turn off "Keep all my subscriptions
+      private" in YouTube. While off, your subscription list is publicly
+      viewable by anyone. Please turn it back on after exporting.
+    </p>
+
+    <!-- ============ 日本語 ============ -->
+    <p class="lang">日本語</p>
+
+    <h2>概要</h2>
+    <p>
+      channelist は、公開設定にしたYouTubeの登録チャンネルをテキスト形式で書き出し、画像として共有できるツールです。ログインは不要です。
+    </p>
+
+    <h2>保存しないデータ</h2>
+    <p>
+      ハンドル名、チャンネルID、登録チャンネル一覧、生成した出力を<strong>一切保存しません</strong>。入力はYouTube
+      Data API を呼び出して結果をあなたのブラウザに返すためだけに Cloudflare Pages
+      Function
+      を通過し、ログやデータベースには書き込まれません。
+    </p>
+
+    <h2>処理される内容</h2>
+    <ul>
+      <li>
+        入力したハンドル/チャンネルURLはサーバー関数へ送信され、サーバー側のAPIキーで
+        YouTube Data API v3
+        を呼び出します。キーがブラウザに露出することはありません。
+      </li>
+      <li>
+        チャンネルアイコンは、共有画像を描画するためだけに、YouTube画像ホストに限定した画像プロキシ(<code>/api/thumbnail</code>)経由で取得される場合があります。画像は保持しません。
+      </li>
+      <li>
+        共有画像はすべてブラウザ内(Canvas)で生成され、サーバーへアップロードされることはありません。
+      </li>
+    </ul>
+
+    <h2>ローカルストレージ</h2>
+    <p>
+      ブラウザに保存されるのは言語設定(<code>JA</code>/<code>EN</code>)のみです。それ以外のデータをローカルストレージやCookieに置くことはありません。
+    </p>
+
+    <h2>第三者</h2>
+    <p>
+      通信は Cloudflare と YouTube Data
+      API(Google)を経由します。ネットワークリクエストの取り扱いは各社のポリシーに従います。
+    </p>
+
+    <h2>登録チャンネルの公開状態について</h2>
+    <p>
+      本アプリを使う際は、YouTubeの「チャンネル登録をすべて非公開にする」を一時的にオフにします。オフの間、あなたの登録チャンネル一覧は誰でも閲覧可能になります。書き出し後は必ず設定を元に戻してください。
+    </p>
+
+    <footer>channelist.pages.dev · MIT License</footer>
+  </body>
+</html>

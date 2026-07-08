@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "channelist",
+    "tagline": "Export your YouTube subscriptions as Text/CSV/Markdown/JSON/OPML and share them as an image"
+  },
+  "header": {
+    "language": "Language"
+  },
+  "landing": {
+    "stepsTitle": "How to use (3 steps)",
+    "step1Title": "Turn off the privacy setting",
+    "step1Body": "In YouTube privacy settings, turn <0>off</0> \"Keep all my subscriptions private\".",
+    "step1Link": "Open privacy settings",
+    "step1AppSummary": "Using the YouTube app?",
+    "step1AppDetail": "Bottom-right \"You\" tab → gear icon (Settings) top-right → Privacy → turn off \"Keep all my subscriptions private\" (in case the link opens the app instead of the settings page).",
+    "step2Title": "Enter your handle or URL and fetch",
+    "step2Body": "Enter your handle (a name starting with @) or channel URL below and fetch.",
+    "step3Title": "Restore the setting when done",
+    "step3Body": "Once fetched, don't forget to turn the setting <0>back to private</0>.",
+    "warning": "While it is off, anyone can view your subscription list.",
+    "inputLabel": "Handle or channel URL",
+    "inputPlaceholder": "@your_handle or https://www.youtube.com/@your_handle",
+    "fetchButton": "Fetch",
+    "noStore": "Your data is never stored on the server.",
+    "privacyLink": "Privacy policy"
+  },
+  "fetching": {
+    "message": "Fetching…"
+  },
+  "result": {
+    "summary": "<0>{{channelTitle}}</0>'s subscriptions: {{count}}",
+    "formatLabel": "Format",
+    "sortLabel": "Sort",
+    "sort": {
+      "name": "By name",
+      "newest": "Newest first",
+      "oldest": "Oldest first"
+    },
+    "format": {
+      "text": "Text",
+      "csv": "CSV",
+      "markdown": "Markdown",
+      "json": "JSON",
+      "opml": "OPML"
+    },
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyFailed": "Copy failed",
+    "download": "Download",
+    "shareImage": "Share as image",
+    "reminder": "Have you set your subscriptions back to private?",
+    "reminderLink": "Open settings page",
+    "restart": "Start over"
+  },
+  "share": {
+    "title": "Share as image",
+    "layoutLabel": "Layout",
+    "layout": {
+      "list": "List",
+      "icon-grid": "Icon grid",
+      "card-grid": "Card grid"
+    },
+    "countLabel": "Count",
+    "preview": "Preview",
+    "generating": "Generating…",
+    "share": "Share",
+    "save": "Save image",
+    "close": "Close",
+    "error": "Failed to generate image"
+  },
+  "error": {
+    "HANDLE_NOT_FOUND": "Channel not found. Please check the handle.",
+    "SUBSCRIPTIONS_PRIVATE": "Your subscriptions are private. Turn off the setting in step 1, wait a few minutes, and try again.",
+    "QUOTA_EXCEEDED": "The daily usage limit has been reached. It resets at midnight Pacific Time.",
+    "RATE_LIMITED": "Too many requests. Please wait a moment and try again.",
+    "UNKNOWN": "Something went wrong. Please try again later.",
+    "settingsLink": "Open privacy settings",
+    "retry": "Try again"
+  },
+  "footer": {
+    "github": "GitHub",
+    "privacy": "Privacy policy",
+    "buyMeACoffee": "Support me on Buy Me a Coffee"
+  }
+}
