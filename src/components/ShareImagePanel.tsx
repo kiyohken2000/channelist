@@ -34,6 +34,19 @@ function isTouchLikeDevice(): boolean {
   return coarsePointer || mobileUA;
 }
 
+/**
+ * iOS(iPhone/iPad)判定。
+ * iOS Safari は <a download> で写真アプリに保存できず、写真アプリへは
+ * 共有シートの「画像を保存」経由でのみ入るため、保存経路の分岐に使う。
+ */
+function isIOS(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent;
+  if (/iPad|iPhone|iPod/.test(ua)) return true;
+  // iPadOS 13+ は MacIntel + タッチとして現れる
+  return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+}
+
 export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps) {
   const { t } = useTranslation();
   const [layout, setLayout] = useState<ShareLayout>('card-grid');
@@ -115,8 +128,21 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
     }
   };
 
-  const handleSave = () => {
-    if (blobRef.current) downloadBlob(blobRef.current, fileName());
+  const handleSave = async () => {
+    const blob = blobRef.current;
+    if (!blob) return;
+    // iOS は <a download> では写真アプリに保存できない。
+    // 共有シートの「画像を保存」経由でのみ写真アプリに入るため share() を使う。
+    if (isIOS() && canShareFiles) {
+      const file = new File([blob], fileName(), { type: 'image/png' });
+      try {
+        await navigator.share({ files: [file] });
+      } catch {
+        // ユーザーキャンセル等は無視
+      }
+      return;
+    }
+    downloadBlob(blob, fileName());
   };
 
   // X で共有:
@@ -225,7 +251,7 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
             <img src={xIcon} alt="" width={18} height={18} aria-hidden="true" />
             {t('share.shareX')}
           </button>
-          {useShareSheet && (
+          {useShareSheet && !isIOS() && (
             <button
               type="button"
               className="btn btn--primary"
@@ -249,6 +275,9 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
           <p className="share__xhint" role="status">
             {t('share.xSavedHint')}
           </p>
+        )}
+        {isIOS() && (
+          <p className="share__xhint">{t('share.iosSaveHint')}</p>
         )}
       </div>
     </div>

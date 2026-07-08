@@ -68,6 +68,7 @@
     "shareX": "Share on X",
     "tweetText": "My YouTube subscriptions 📺 Show me yours! #channelist",
     "xSavedHint": "Image saved — attach it in the X composer that just opened.",
+    "iosSaveHint": "Tap Save image, then choose \"Save Image\" in the sheet to add it to Photos.",
     "close": "Close",
     "error": "Failed to generate image"
   },
