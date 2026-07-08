@@ -7,7 +7,7 @@ import {
   COUNT_OPTIONS,
 } from '../lib/shareImage';
 import { downloadBlob, todayStamp } from '../lib/download';
-import { SITE_URL, buildXIntentUrl } from '../constants';
+import { buildXIntentUrl } from '../constants';
 import xIcon from '../assets/images/x-icon-64.png';
 
 interface ShareImagePanelProps {
@@ -149,27 +149,18 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
   //  - モバイル(canShareFiles): 共有シートに画像 + テキストを渡す(X を選べば画像添付済み)
   //  - PC: X の intent は画像添付不可のため、画像を自動保存してから
   //        テキスト+リンク入りの投稿画面を開き、手動添付を促す
-  const handleShareX = async () => {
-    const blob = blobRef.current;
-    if (!blob) return;
+  const handleShareX = () => {
     const tweetText = t('share.tweetText');
-
-    // スマホ等のタッチ端末のみ共有シート経路(画像添付可)。
-    // PC は canShare が真でも Windows 共有UIが開くだけで X に飛べないため、
-    // intent(テキスト+リンク)+ 画像自動保存の経路にする。
-    if (useShareSheet) {
-      const file = new File([blob], fileName(), { type: 'image/png' });
-      try {
-        await navigator.share({ files: [file], text: `${tweetText}\n${SITE_URL}` });
-      } catch {
-        // ユーザーキャンセル等は無視
-      }
-      return;
+    // X の投稿画面(テキスト+リンク)を直接開く。
+    // ※ X の intent は画像添付に非対応のため画像は付かない(仕様上の制約)。
+    // PC では画像を手元に用意できるよう自動保存して案内を出す。
+    // スマホは <a download> が写真アプリに入らないため自動保存はせず、
+    // 画像が必要な場合は「画像を保存」から保存してもらう。
+    if (!isTouchLikeDevice() && blobRef.current) {
+      downloadBlob(blobRef.current, fileName());
+      setXHint(true);
     }
-
-    downloadBlob(blob, fileName());
     window.open(buildXIntentUrl(tweetText), '_blank', 'noopener,noreferrer');
-    setXHint(true);
   };
 
   return (
