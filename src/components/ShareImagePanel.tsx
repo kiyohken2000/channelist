@@ -22,6 +22,18 @@ function fileName(): string {
   return `channelist-${todayStamp()}.png`;
 }
 
+/**
+ * タッチ端末(スマホ/タブレット)らしいかを判定する。
+ * デスクトップ Chrome/Edge(Windows)も navigator.canShare({files}) が真になるため、
+ * X 共有では「共有シート経路(画像添付可)」を使うかどうかの分岐にこれを併用する。
+ */
+function isTouchLikeDevice(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
+  const coarsePointer = window.matchMedia?.('(pointer: coarse)').matches ?? false;
+  const mobileUA = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  return coarsePointer || mobileUA;
+}
+
 export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps) {
   const { t } = useTranslation();
   const [layout, setLayout] = useState<ShareLayout>('card-grid');
@@ -37,6 +49,10 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
 
   const maxCount = LAYOUT_MAX_COUNT[layout];
   const effectiveCount = Math.min(count, maxCount);
+
+  // 共有シート(画像添付)経路を使うのはタッチ端末かつ Web Share 対応時のみ。
+  // PC(canShare が真でも)は共有シートに行かず、保存/intent 経路にする。
+  const useShareSheet = canShareFiles && isTouchLikeDevice();
 
   // 選択変更のたびに Canvas で再生成
   useEffect(() => {
@@ -112,7 +128,10 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
     if (!blob) return;
     const tweetText = t('share.tweetText');
 
-    if (canShareFiles) {
+    // スマホ等のタッチ端末のみ共有シート経路(画像添付可)。
+    // PC は canShare が真でも Windows 共有UIが開くだけで X に飛べないため、
+    // intent(テキスト+リンク)+ 画像自動保存の経路にする。
+    if (useShareSheet) {
       const file = new File([blob], fileName(), { type: 'image/png' });
       try {
         await navigator.share({ files: [file], text: `${tweetText}\n${SITE_URL}` });
@@ -206,7 +225,7 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
             <img src={xIcon} alt="" width={18} height={18} aria-hidden="true" />
             {t('share.shareX')}
           </button>
-          {canShareFiles && (
+          {useShareSheet && (
             <button
               type="button"
               className="btn btn--primary"

@@ -24,3 +24,5 @@ Thumbs.db
 coverage/
 *.tsbuildinfo
 node_modules/.tmp/
+
+_temp/
