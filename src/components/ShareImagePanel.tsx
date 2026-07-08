@@ -7,6 +7,8 @@ import {
   COUNT_OPTIONS,
 } from '../lib/shareImage';
 import { downloadBlob, todayStamp } from '../lib/download';
+import { SITE_URL, buildXIntentUrl } from '../constants';
+import xIcon from '../assets/images/x-icon-64.png';
 
 interface ShareImagePanelProps {
   /** ResultView で選択中のソート順に並んだ配列(先頭 N 件が対象)。 */
@@ -28,6 +30,7 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState(false);
   const [canShareFiles, setCanShareFiles] = useState(false);
+  const [xHint, setXHint] = useState(false);
 
   const blobRef = useRef<Blob | null>(null);
   const previewUrlRef = useRef<string | null>(null);
@@ -40,6 +43,7 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
     let cancelled = false;
     setGenerating(true);
     setError(false);
+    setXHint(false);
 
     renderShareImage(subscriptions, { layout, count: effectiveCount })
       .then((result) => {
@@ -97,6 +101,30 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
 
   const handleSave = () => {
     if (blobRef.current) downloadBlob(blobRef.current, fileName());
+  };
+
+  // X で共有:
+  //  - モバイル(canShareFiles): 共有シートに画像 + テキストを渡す(X を選べば画像添付済み)
+  //  - PC: X の intent は画像添付不可のため、画像を自動保存してから
+  //        テキスト+リンク入りの投稿画面を開き、手動添付を促す
+  const handleShareX = async () => {
+    const blob = blobRef.current;
+    if (!blob) return;
+    const tweetText = t('share.tweetText');
+
+    if (canShareFiles) {
+      const file = new File([blob], fileName(), { type: 'image/png' });
+      try {
+        await navigator.share({ files: [file], text: `${tweetText}\n${SITE_URL}` });
+      } catch {
+        // ユーザーキャンセル等は無視
+      }
+      return;
+    }
+
+    downloadBlob(blob, fileName());
+    window.open(buildXIntentUrl(tweetText), '_blank', 'noopener,noreferrer');
+    setXHint(true);
   };
 
   return (
@@ -169,6 +197,15 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
         </div>
 
         <div className="share__actions">
+          <button
+            type="button"
+            className="btn btn--x"
+            onClick={handleShareX}
+            disabled={generating || !previewUrl}
+          >
+            <img src={xIcon} alt="" width={18} height={18} aria-hidden="true" />
+            {t('share.shareX')}
+          </button>
           {canShareFiles && (
             <button
               type="button"
@@ -181,13 +218,19 @@ export function ShareImagePanel({ subscriptions, onClose }: ShareImagePanelProps
           )}
           <button
             type="button"
-            className={`btn ${canShareFiles ? '' : 'btn--primary'}`}
+            className="btn"
             onClick={handleSave}
             disabled={generating || !previewUrl}
           >
             {t('share.save')}
           </button>
         </div>
+
+        {xHint && (
+          <p className="share__xhint" role="status">
+            {t('share.xSavedHint')}
+          </p>
+        )}
       </div>
     </div>
   );

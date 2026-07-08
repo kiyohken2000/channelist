@@ -65,6 +65,9 @@
     "generating": "生成中…",
     "share": "共有",
     "save": "画像を保存",
+    "shareX": "X で共有",
+    "tweetText": "YouTubeの登録チャンネル一覧を書き出しました 📺 #channelist",
+    "xSavedHint": "画像を保存しました。開いた X の投稿画面で画像を添付してください。",
     "close": "閉じる",
     "error": "画像の生成に失敗しました"
   },

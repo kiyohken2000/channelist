@@ -474,8 +474,32 @@ a {
 }
 .share__actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-end;
+}
+.btn--x {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+.btn--x:hover:not(:disabled) {
+  background: #1a1a1a;
+}
+.btn--x img {
+  display: block;
+}
+.share__xhint {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--sub);
+  background: var(--surface);
+  border-radius: 8px;
+  text-align: right;
 }
 
 @media (max-width: 520px) {

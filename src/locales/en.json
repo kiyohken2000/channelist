@@ -65,6 +65,9 @@
     "generating": "Generating…",
     "share": "Share",
     "save": "Save image",
+    "shareX": "Share on X",
+    "tweetText": "Exported my YouTube subscriptions 📺 #channelist",
+    "xSavedHint": "Image saved — attach it in the X composer that just opened.",
     "close": "Close",
     "error": "Failed to generate image"
   },
