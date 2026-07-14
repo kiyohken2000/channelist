@@ -12,7 +12,7 @@
     "step1Body": "In YouTube privacy settings, turn <0>off</0> \"Keep all my subscriptions private\".",
     "step1Link": "Open privacy settings",
     "step1AppSummary": "Using the YouTube app?",
-    "step1AppDetail": "Bottom-right \"You\" tab → gear icon (Settings) top-right → Privacy → turn off \"Keep all my subscriptions private\" (in case the link opens the app instead of the settings page).",
+    "step1AppDetail": "Bottom-right \"You\" tab → \"Edit channel\" → \"Privacy\" section near the bottom → turn off \"Keep all my subscriptions private\" (in case the link opens the app instead of the settings page).",
     "step2Title": "Enter your handle or URL and fetch",
     "step2Body": "Enter your handle (a name starting with @) or channel URL below and fetch.",
     "step3Title": "Restore the setting when done",
@@ -75,7 +75,7 @@
   },
   "error": {
     "HANDLE_NOT_FOUND": "Channel not found. Please check the handle.",
-    "SUBSCRIPTIONS_PRIVATE": "Your subscriptions are private. Turn off the setting in step 1, wait a few minutes, and try again.",
+    "SUBSCRIPTIONS_PRIVATE": "Your subscriptions look private. Please check that (1) \"Keep all my subscriptions private\" is turned off in step 1, and (2) you changed it on the same account as the handle you entered. Right after turning it off, it can take several to a dozen minutes to take effect, so please wait a bit and try again.",
     "QUOTA_EXCEEDED": "The daily usage limit has been reached. It resets at midnight Pacific Time.",
     "RATE_LIMITED": "Too many requests. Please wait a moment and try again.",
     "UNKNOWN": "Something went wrong. Please try again later.",
