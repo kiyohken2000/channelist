@@ -12,7 +12,7 @@
     "step1Body": "In YouTube privacy settings, turn <0>off</0> \"Keep all my subscriptions private\".",
     "step1Link": "Open privacy settings",
     "step1AppSummary": "Using the YouTube app?",
-    "step1AppDetail": "Bottom-right \"You\" tab → \"Edit channel\" → \"Privacy\" section near the bottom → turn off \"Keep all my subscriptions private\" (in case the link opens the app instead of the settings page).",
+    "step1AppDetail": "Bottom-right \"You\" tab → \"Edit channel\" → turn off \"Keep all my subscriptions private\" (in case the link opens the app instead of the settings page).",
     "step2Title": "Enter your handle or URL and fetch",
     "step2Body": "Enter your handle (a name starting with @) or channel URL below and fetch.",
     "step3Title": "Restore the setting when done",
