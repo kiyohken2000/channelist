@@ -7,6 +7,8 @@
     "language": "Language"
   },
   "landing": {
+    "samplePrompt": "See what the output looks like with sample data before you fetch.",
+    "sampleButton": "See a sample",
     "stepsTitle": "How to use (3 steps)",
     "step1Title": "Turn off the privacy setting",
     "step1Body": "In YouTube privacy settings, turn <0>off</0> \"Keep all my subscriptions private\".",
@@ -50,7 +52,9 @@
     "shareImage": "Share as image",
     "reminder": "Have you set your subscriptions back to private?",
     "reminderLink": "Open settings page",
-    "restart": "Start over"
+    "restart": "Start over",
+    "sampleNotice": "This is sample data. Try switching formats or sharing as an image. Follow the steps below to export your real subscriptions.",
+    "sampleBack": "Back to fetch your own"
   },
   "share": {
     "title": "Share as image",

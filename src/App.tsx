@@ -2,6 +2,7 @@ import { useCallback, useReducer, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { SubscriptionsResponse, ApiError } from './types';
 import { fetchSubscriptions, SubscriptionsError } from './lib/api';
+import { SAMPLE_DATA } from './lib/sampleData';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { LandingView } from './components/LandingView';
@@ -13,13 +14,14 @@ import { YOUTUBE_PRIVACY_URL } from './constants';
 type State =
   | { status: 'idle' }
   | { status: 'fetching' }
-  | { status: 'done'; data: SubscriptionsResponse }
+  | { status: 'done'; data: SubscriptionsResponse; sample: boolean }
   | { status: 'error'; error: ApiError };
 
 type Action =
   | { type: 'FETCH_START' }
   | { type: 'FETCH_SUCCESS'; data: SubscriptionsResponse }
   | { type: 'FETCH_ERROR'; error: ApiError }
+  | { type: 'SHOW_SAMPLE' }
   | { type: 'RESET' };
 
 function reducer(state: State, action: Action): State {
@@ -27,9 +29,11 @@ function reducer(state: State, action: Action): State {
     case 'FETCH_START':
       return { status: 'fetching' };
     case 'FETCH_SUCCESS':
-      return { status: 'done', data: action.data };
+      return { status: 'done', data: action.data, sample: false };
     case 'FETCH_ERROR':
       return { status: 'error', error: action.error };
+    case 'SHOW_SAMPLE':
+      return { status: 'done', data: SAMPLE_DATA, sample: true };
     case 'RESET':
       return { status: 'idle' };
     default:
@@ -58,10 +62,19 @@ export default function App() {
     <div className="app">
       <Header />
       <main className="app__main">
-        {state.status === 'idle' && <LandingView onFetch={runFetch} />}
+        {state.status === 'idle' && (
+          <LandingView
+            onFetch={runFetch}
+            onShowSample={() => dispatch({ type: 'SHOW_SAMPLE' })}
+          />
+        )}
         {state.status === 'fetching' && <FetchingView />}
         {state.status === 'done' && (
-          <ResultView data={state.data} onRestart={() => dispatch({ type: 'RESET' })} />
+          <ResultView
+            data={state.data}
+            sample={state.sample}
+            onRestart={() => dispatch({ type: 'RESET' })}
+          />
         )}
         {state.status === 'error' && (
           <ErrorView

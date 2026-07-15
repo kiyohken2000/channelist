@@ -4,9 +4,10 @@ import { YOUTUBE_PRIVACY_URL, PRIVACY_POLICY_URL } from '../constants';
 
 interface LandingViewProps {
   onFetch: (handle: string) => void;
+  onShowSample: () => void;
 }
 
-export function LandingView({ onFetch }: LandingViewProps) {
+export function LandingView({ onFetch, onShowSample }: LandingViewProps) {
   const { t } = useTranslation();
   const [value, setValue] = useState('');
 
@@ -19,6 +20,13 @@ export function LandingView({ onFetch }: LandingViewProps) {
   return (
     <section className="landing">
       <p className="landing__tagline">{t('app.tagline')}</p>
+
+      <div className="landing__sample">
+        <p className="landing__sample-text">{t('landing.samplePrompt')}</p>
+        <button type="button" className="btn" onClick={onShowSample}>
+          {t('landing.sampleButton')}
+        </button>
+      </div>
 
       <ol className="steps">
         <li className="step">

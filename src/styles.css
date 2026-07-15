@@ -130,6 +130,22 @@ a {
   font-size: 18px;
   color: var(--sub);
 }
+.landing__sample {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.landing__sample-text {
+  margin: 0;
+  flex: 1 1 220px;
+  font-size: 14px;
+  color: var(--sub);
+}
 .steps {
   list-style: none;
   counter-reset: step;
@@ -228,6 +244,15 @@ a {
 }
 
 /* Result */
+.result__sample-notice {
+  margin: 0 0 4px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--sub);
+}
 .result__summary {
   font-size: 17px;
 }

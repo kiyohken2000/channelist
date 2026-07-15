@@ -14,12 +14,14 @@ import { ShareImagePanel } from './ShareImagePanel';
 interface ResultViewProps {
   data: SubscriptionsResponse;
   onRestart: () => void;
+  /** サンプル表示モード(架空データ)。注意書きを出し、非公開に戻すリマインダーを隠す。 */
+  sample?: boolean;
 }
 
 const FORMATS: OutputFormat[] = ['text', 'csv', 'markdown', 'json', 'opml'];
 const SORTS: SortOrder[] = ['name', 'newest', 'oldest'];
 
-export function ResultView({ data, onRestart }: ResultViewProps) {
+export function ResultView({ data, onRestart, sample = false }: ResultViewProps) {
   const { t, i18n } = useTranslation();
   const [format, setFormat] = useState<OutputFormat>('text');
   const [sortOrder, setSortOrder] = useState<SortOrder>('name');
@@ -57,6 +59,12 @@ export function ResultView({ data, onRestart }: ResultViewProps) {
 
   return (
     <section className="result">
+      {sample && (
+        <p className="result__sample-notice" role="note">
+          {t('result.sampleNotice')}
+        </p>
+      )}
+
       <p className="result__summary">
         <Trans
           i18nKey="result.summary"
@@ -124,15 +132,17 @@ export function ResultView({ data, onRestart }: ResultViewProps) {
         </button>
       </div>
 
-      <p className="result__reminder" role="note">
-        🔒 {t('result.reminder')}{' '}
-        <a href={YOUTUBE_PRIVACY_URL} target="_blank" rel="noopener noreferrer">
-          {t('result.reminderLink')} ↗
-        </a>
-      </p>
+      {!sample && (
+        <p className="result__reminder" role="note">
+          🔒 {t('result.reminder')}{' '}
+          <a href={YOUTUBE_PRIVACY_URL} target="_blank" rel="noopener noreferrer">
+            {t('result.reminderLink')} ↗
+          </a>
+        </p>
+      )}
 
       <button type="button" className="link-btn" onClick={onRestart}>
-        ← {t('result.restart')}
+        ← {sample ? t('result.sampleBack') : t('result.restart')}
       </button>
 
       {toast && <div className="toast" role="status">{toast}</div>}
